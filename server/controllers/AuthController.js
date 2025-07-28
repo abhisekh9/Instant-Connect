@@ -2,6 +2,7 @@ import { compare } from 'bcrypt';
 import User from '../models/UserModel.js';
 import jwt from "jsonwebtoken";
 import { renameSync, unlinkSync } from "fs";
+import { generateStreamToken } from "../lib/stream.js";
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
@@ -178,4 +179,16 @@ export const logout = async (request, response, next) => {
         console.log(error);
         return response.status(500).send("Internal Server Error");
     }
+};
+
+export const getStreamToken = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const streamToken = generateStreamToken(userId);
+
+    return res.status(200).json({ token: streamToken });
+  } catch (error) {
+    console.error("Error generating stream token", error);
+    return res.status(500).send("Failed to generate stream token");
+  }
 };

@@ -36,6 +36,11 @@ const MessageBar = () => {
   };
 
   const handleSendMessage = async () => {
+     if (!socket) {
+    console.warn("Socket not connected.");
+    return;
+  }
+  
     if(selectedChatType === "contact"){
       socket.emit("sendMessage", {
         sender: userInfo.id,
@@ -56,6 +61,7 @@ const MessageBar = () => {
     }
     setMessage("");
   };
+
 
   const handleAttachmentClick = () => {
     if(fileInputRef.current){

@@ -56,7 +56,7 @@ const setupSocket = (server) => {
         });
 
         const messageData = await Message.findById(createdMessage._id)
-            .populate("sender", "id email, firstName, lastName, image, color")
+            .populate("sender", "id email firstName lastName image color")
             .exec();
 
         await Channel.findByIdAndUpdate(channelId, {
@@ -94,6 +94,22 @@ const setupSocket = (server) => {
         socket.on("sendMessage", sendMessage);
         socket.on("send-channel-message", sendChannelMessage);
         socket.on("disconnect", () => handleDisconnect(socket));
+        socket.on("call-user", ({ recipientId, callData }) => {
+        const recipientSocketId = userSocketMap.get(recipientId);
+            if (recipientSocketId) {
+                io.to(recipientSocketId).emit("incoming-call", {
+                    from: userId,
+                    callData, // usually includes Stream call ID or token
+                });
+            }
+        });
+
+        socket.on("end-call", ({ recipientId }) => {
+            const recipientSocketId = userSocketMap.get(recipientId);
+            if (recipientSocketId) {
+                io.to(recipientSocketId).emit("call-ended", { from: userId });
+            }
+        });
     });
 };
 
