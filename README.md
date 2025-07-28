@@ -9,13 +9,15 @@ A real-time chat application built using the MERN (MongoDB, Express, React, Node
 - Private and group chats
 - Message history stored in MongoDB
 - Responsive UI using React
+- **1:1 Video and Audio Calling powered by ZEGOCLOUD Callkit**
+- **Screen sharing and call controls during active sessions**
 
 ## Tech Stack
 
 - **Frontend:** React, Shadcn-ui
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB (Mongoose)
-- **Real-time Communication:** Socket.IO
+- **Real-time Communication:** Socket.IO, ZEGOCLOUD Callkit
 - **Authentication:** JWT (JSON Web Token)
 
 ## Installation
